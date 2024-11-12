@@ -9,7 +9,7 @@ import Foundation
     /// - Parameters:
     /// - host: host for which the latency should be found
     /// - completion: closure that is called with the latency result in millinseconds - will return nil if request fails
-    //@objc func findLatency(for host: String, completion: @escaping @Sendable (NSNumber?) -> Void)
+    @objc func findLatency(for host: String, completion: @escaping @Sendable (NSNumber?) -> Void)
     
     
     /// Returns average latency for a host
@@ -22,7 +22,7 @@ import Foundation
 
 @objc public class LatencyFinder: NSObject, LatencyFinderType {
     
-    func findLatency(for host: String, completion: @escaping @Sendable (NSNumber?) -> Void) {
+    @objc public func findLatency(for host: String, completion: @escaping @Sendable (NSNumber?) -> Void) {
         
         guard let url = URL(string: host) else {
             completion(nil)
@@ -54,7 +54,7 @@ import Foundation
         let dispatchGroup = DispatchGroup()
         let latencyCollector = LatencyCollector()
         
-        for _ in 1...repeatCount {
+        for _ in 0..<repeatCount {
             dispatchGroup.enter()
             findLatency(for: host) { latency in
                 if let latencyValue = latency?.doubleValue {
